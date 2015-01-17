@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<meta charset="utf-8" />
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+<title> Downtown Cleveland Parking Map </title> 
+    </head>
+  <body>
+  <style>
+.legend label,
+
+.legend span {
+  display:block;
+  height:15px;
+  width:20%;
+  text-align:left;
+  font-size:9px;
+  color:#353535;
+  }
+</style>
+<div id='legend' style='display:none;'>
+  <strong>Downtown Cleveland Parking</strong>
+  <nav class='legend clearfix'>
+ <label>Surface         </label>   <span style='background:#679967;'></span>    <br>
+  <label>Multi-Level             </label>  <span style='background:#996767;'></span>  <br> 
+
+     <label>Underground</label>  <span style='background:#676799;'></span>   <br>
+
+     info at <a href="http://github.com/skorasaurus/dtparking"> http://github.com/skorasaurus/dtparking</a>
+
+ 
+</div>
+
+    <div id="mapid" style="width: 100%; height: 600px; border: 1px solid #ccc;"></div>
+
+<script> 
+L.mapbox.accessToken = 'pk.eyJ1Ijoic2tvcmFzYXVydXMiLCJhIjoiaEdGTUZWTSJ9.osOC8tWU3bMaNprVNoEu7g';
+
+var mizzap = L.mapbox.map('mapid', 'skorasaurus.5eb85050')
+    .setView([41.500880, -81.694036], 16);
+
+
+// https://www.mapbox.com/foundations/building-a-store-locator/
+// initializes feature layer for use later: 
+// https://github.com/maptime/maptime-bites/blob/gh-pages/00004/index.html
+var featLayer = L.mapbox.featureLayer().addTo(mizzap);
+
+// loads the geojson file - must be hosted at same domain as this html file 
+featLayer.loadURL('dtparking.geojson');
+
+mizzap.legendControl.addLegend(document.getElementById('legend').innerHTML);
+
+function getMyColor(myargument) {
+    if (myargument === 'multi-storey') {
+        return '#996767'
+    };
+    if (myargument === 'surface') {
+        return '#679967'
+    };
+    if (myargument === 'underground') {
+        return '#676799'
+    };
+}
+
+// styles each polygon based on its properties in the geojson file, using leaflet's setStyle
+featLayer.on('ready', function() {
+    featLayer.eachLayer(function(polygon) {
+        polygon.bindPopup('This is a ' + polygon.feature.properties.parking + ' parking lot');
+        console.log(typeof setStyle);
+        polygon.setStyle({
+            opacity: 0.55,
+            fillOpacity: 0.55,
+            fillColor: getMyColor(polygon.feature.properties.parking),
+            color: getMyColor(polygon.feature.properties.parking) * 1.04
+        });
+    });
+});
+
+            </script>
+        
+
+
+  </body>
+</html>
