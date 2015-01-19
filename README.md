@@ -25,3 +25,5 @@ and get [this](http://maptimepdx.org/01-21-2014/sharing-code-samples.html).
 * [00006](http://maptime.github.io/maptime-bites/00006/): Embedding iFrame code in Tooltips.
 * [00007](http://maptime.github.io/maptime-bites/00007/): Blinking circle marker.
 * [00008](http://maptime.github.io/maptime-bites/00008/): Loading custom GeoJSON with D3 JS.
+* [00011](http://maptime.github.io/maptime-bites/00011/): Style GeoJSON according on features' properties using MapBox JS. 
+
